@@ -97,30 +97,68 @@
   }
 }( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 4.2.1"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/cat1.jpg"></div><!--.profile-saying
   i.fa.fa-comment
-  .saying--><div class="cxo-profile-inner"><div class="profile-name">三牛</div><div class="profile-signature">for you thousand times</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.Niu's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1>Mr.Niu's Blog</h1><h5>学习和记录</h5><div class="intro-social"><a class="fa fa-github" href="//guben.github.io/" target="_blank" title="github"></a></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><section id="recent-posts"><div class="recent-post-item"><div class="post-title"><a href="/2020/06/04/Blog%E4%B8%8A%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%AD%A5%E9%AA%A4/">Blog上发布文章步骤</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-04T06:37:22.000Z">2020-06-04</time></div><div class="recent-post-content">防止自己遗忘，将步骤写一下
-首先在blog目录下打开CMD
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">三牛</div><div class="profile-signature">for you thousand times</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.Niu's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1>Mr.Niu's Blog</h1><h5>学习和记录</h5><div class="intro-social"><a class="fa fa-github" href="//guben.github.io/" target="_blank" title="github"></a></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><section id="recent-posts"><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E3%80%81%E6%8C%87%E5%90%91%E6%95%B0%E7%BB%84%E7%9A%84%E6%8C%87%E9%92%88%E5%92%8C%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">数组指针、指向数组的指针和函数指针</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.946Z">2020-06-14</time></div><div class="recent-post-content">数组指针、指向数组的指针和函数指针区别两个东西：
+1234567int *a[10];//指针数组，a[i]中存的是int *int (*pa)[10];//定义了一个指针，这个指针指向的是具有10个int元素的数组//所以，a++是指向a[1]存的是一个指向int的指针//但是pa++，则是跳过了这十个int元素，指向下一个十个int的起始地址int array[5][10];pa=&amp;array[0];
 
-hexo new name #创建新文章
+函数指针：
+12345678910111213141516void func(const char *s)&#123;    printf("hello %s\n",s);&#12 ...</div><div class="read-more"><a class="more" href="/2020/06/14/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E3%80%81%E6%8C%87%E5%90%91%E6%95%B0%E7%BB%84%E7%9A%84%E6%8C%87%E9%92%88%E5%92%8C%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/%E4%BC%A0%E5%85%A5%E4%B8%A4%E5%B1%82%E6%8C%87%E9%92%88%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%88%E5%88%86%E9%85%8D%E7%A9%BA%E9%97%B4%EF%BC%89/">传入两层指针的用法（分配空间）</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.817Z">2020-06-14</time></div><div class="recent-post-content">#函数接口，传入两层指针的用法（分配空间）
+传入参数、传出参数注意传出参数和返回值的概念区别。
+有些函数的指针参数同时担当了这两种角色，如select(2)的fd_set *参数，既是传入参数又是传出参数，这称为Value-result参数。由于传出参数和Value-result参数的函数接口完全相同，应该在文档中说明是哪种参数。
+两层指针的参数（分配空间）两层指针也是指针，同样可以表示传入参数、传出参数或者Value-result参数，只不过该参数所指的内存空间应该解释成一个指针变量。用两层指针做传出参数的系统函数也很常见，比如pthread_join(3)的void **参数。下面看一个简 ...</div><div class="read-more"><a class="more" href="/2020/06/14/%E4%BC%A0%E5%85%A5%E4%B8%A4%E5%B1%82%E6%8C%87%E9%92%88%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%88%E5%88%86%E9%85%8D%E7%A9%BA%E9%97%B4%EF%BC%89/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/%E4%B8%8D%E5%AE%8C%E5%85%A8%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%A4%8D%E6%9D%82%E5%A3%B0%E6%98%8E/">不完全类型和复杂声明</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.815Z">2020-06-14</time></div><div class="recent-post-content">不完全类型和复杂声明
+c语言类型分为函数类型、对象类型和不完全类型。
+对象类型分为标量类型和非标量类型。
+不完全类型是暂时没有完全定义好的类型，编译器不知道这种类型该占几个字节的存储空间。
+123struct s;union u;char str[];
 
-找到文章，使用markdown编辑
+具有不完全类型的变量可以通过多次声明组合成一个完全类型，比如数组str声明两次：
+12char str[];char str[10];
 
-部署
+当编译器碰到第一个声明时，认为str是一个不完全类型，碰到第二个声明时str就组合成完全类型了，如果编译器处理到程序文件的末尾仍然无法把str组合成一个完全类型，就会报错.
+不完全的结构体类型有重要作用：
+ ...</div><div class="read-more"><a class="more" href="/2020/06/14/%E4%B8%8D%E5%AE%8C%E5%85%A8%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%A4%8D%E6%9D%82%E5%A3%B0%E6%98%8E/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(5)/">Makefile学习(5)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.802Z">2020-06-14</time></div><div class="recent-post-content">Makefile学习(5)常用的make命令选项
+-n
+-n选项只打印要执行的命令，而不会真的执行命令，这个选项有助于我们检查Makefile写得是否正确，由于Makefile不是顺序执行的，用这个选项可以先看看命令的执行顺序，确认无误了再真正执行命令。
 
-hexo generate #生成hexo server #启动服务预览hexo deploy #部署发布hexo clean #清除缓存
+-C
+-C选项可以切换到另一个目录执行那个目录下的Makefile，比如先退到上一级目录再执行我们的Makefile（假设我们的源代码都放在testmake目录下）：
+12345678$ cd ..$ make -C testmakemake: Entering directory `/home/akaedu/testmake'cc     ...</div><div class="read-more"><a class="more" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(5)/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(4)/">Makefile学习(4)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.791Z">2020-06-14</time></div><div class="recent-post-content">Makefile学习(4)自动处理头文件的依赖关系现在我们的Makefile写成这样：
+12345678910111213all: mainmain: main.o stack.o maze.o	gcc $^ -o $@main.o: main.h stack.h maze.hstack.o: stack.h main.hmaze.o: maze.h main.hclean:	-rm main *.o.PHONY: clean
+
+按照惯例，用all做缺省目标。现在还有一点比较麻烦，在写main.o、stack.o和maze.o这三个目标的规则时要查看源代码，找出它们依赖于哪些头文件，这很容易出 ...</div><div class="read-more"><a class="more" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(4)/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(3)/">Makefile学习(3)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.779Z">2020-06-14</time></div><div class="recent-post-content">Makefile学习(3)变量详细讲一下关于Makefile中的变量的语法规则：
+
+=运算符
+
+例子：
+12345foo = $(bar) bar = Huh? #先定义，并不会立刻展开all: 	@echo $(foo)
+
+命令是执行echo，然后取foo的值，foo是bar的值，bar值是Huh？。变量的值可以推迟到后面定义。
+1234567main.o: main.c	$(CC) $(CFLAGS) $(CPPFLAGS) -c $&lt;CC = gccCFLAGS = -O -gCPPFLAGS = -Iinclude#这里所有的变量都是在后面定义的
 
 
-简写
+:=运算符
+如果想要make ...</div><div class="read-more"><a class="more" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(3)/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(2)/">Makefile学习(2)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.763Z">2020-06-14</time></div><div class="recent-post-content">Makefile学习(2)隐含规则和模式规则makefile的很多灵活写法：
 
-hexo n “我的博客” == hexo new “我的博客” #新建文章
-hexo p == hexo publish
-hexo g == hexo generate#生成
-hexo s == hexo server #启动服务预览
-hexo d == hexo deploy#部署
+一个目标依赖的所有条件可以拆开来写：
+1234567main.o: main.h stack.h maze.hmain.o: main.c 	gcc -c main.c#上述就相当于main.o: main.c main.h stack.h maze.h	gcc -c main.c
+
+如果一个目标拆开写多条规则，其中只有一条规则允许有命令列表，其他规则应该没有命令列表，否则make会报警告并且只会执行最后一条规则。
+1234567891011121314151617181920main: main.o stack. ...</div><div class="read-more"><a class="more" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(2)/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(1)/">Makefile学习(1)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.725Z">2020-06-14</time></div><div class="recent-post-content">Makefile学习（1）基本规则
+首先，为什么要有Makefile呢？
+答：除了Hello World这种极简单的程序之外，一般的程序都是由多个源文件编译链接而成的，这些源文件的处理步骤通常用Makefile来管理。尤其是大型的软件工程项目中，很多的源文件，如果每次只是修改了其中的一个文件，但是没有Makefile，需要每个文件都编译一遍的话，可能几个小时或者几天就过去了。使用Makefile，会检查一下是否文件有修改，仅仅编译需要改动的部分。
+
+基本规则：
+123456789101112target ... : prerequisites ... 	command1	command2	.. ...</div><div class="read-more"><a class="more" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(1)/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/C%E6%A0%87%E5%87%86%E5%BA%93-%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0/">C标准库-字符操作函数</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.686Z">2020-06-14</time></div><div class="recent-post-content">C标准库-字符操作函数
+初始化字符串, memset
+
+12345#include &lt;string.h&gt;void *memset(void *s, int c, size_t n);//将s指向的内存地址开始的n个字节都填充为c的值char buf[10];memset(buf,0,10);
 
 
+取字符串长度，strlen
+
+1234#include &lt;string.h&gt;size_t strlen(const char *s);//从s开始找到'\0'字符，返回长度包括'\0'在内//如果该字符串没有'\0'，可能会导致数组越界访问
 
 
- ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="hexo blog"> hexo blog</a></div><div class="read-more"><a class="more" href="/2020/06/04/Blog%E4%B8%8A%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E6%AD%A5%E9%AA%A4/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/04/For-test/">For test</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-04T06:09:36.000Z">2020-06-04</time></div><div class="recent-post-content">三牛的blog，
-第一篇测试文章。
-blog地址：https://guben.github.io/
-</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="CowboyCode"> CowboyCode</a></div><div class="read-more"><a class="more" href="/2020/06/04/For-test/#more">ReadMore</a></div><hr></div></section><nav class="cxo-page-nav"><span class="page-number current">1</span></nav></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo" target="_blank" rel="noopener"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>
+拷贝字符串，strcpy和str ...</div><div class="read-more"><a class="more" href="/2020/06/14/C%E6%A0%87%E5%87%86%E5%BA%93-%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2020/06/14/C%E6%A0%87%E5%87%86%E5%BA%93%E2%80%94%E6%A0%87%E5%87%86IO%E5%BA%93%E5%87%BD%E6%95%B0/">C标准库—标准IO库函数</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2020-06-14T08:07:51.654Z">2020-06-14</time></div><div class="recent-post-content">C标准库—标准I/O库函数C标准库，对于文件的操作。
+FILE类型，用来顶一个指针指向一个打开的文件。
+FILE *fp=fopen(“file1”,”r”);
+fopen/fclose12345678910111213141516#include &lt;stdio.h&gt;FILE *fopen(const char *path, const char *mode);//返回值：成功返回文件指针，出错返回NULL并设置errno，返回的这个指针就是文件句柄（Handle），具有不透明性//FILE是C标准库中定义的结构体类型，其中包含该文件在内核中标识(文件描述符)、I/O缓冲区和当前读 ...</div><div class="read-more"><a class="more" href="/2020/06/14/C%E6%A0%87%E5%87%86%E5%BA%93%E2%80%94%E6%A0%87%E5%87%86IO%E5%BA%93%E5%87%BD%E6%95%B0/#more">ReadMore</a></div><hr></div></section><nav class="cxo-page-nav"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">NEXT &amp;#62;</a></nav></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo" target="_blank" rel="noopener"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

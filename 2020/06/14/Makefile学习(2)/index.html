@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="TripleNiu"><meta name="renderer" content="webkit"><meta name="copyright" content="TripleNiu"><meta name="keywords" content="CowboyCode"><meta name="description" content="转专业的，啥都不会，啥都在学的CS研究生"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Makefile学习(2) · Mr.Niu's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 4.2.1"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/cat1.jpg"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">三牛</div><div class="profile-signature">for you thousand times</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.Niu's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">Makefile学习(2)</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2020-06-14</span></span></div><div class="post-intro-read"><span> Word count: <span class="post-count">690</span> | Reading time: <span class="post-count">3</span>min</span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h1 id="Makefile学习-2"><a href="#Makefile学习-2" class="headerlink" title="Makefile学习(2)"></a>Makefile学习(2)</h1><h2 id="隐含规则和模式规则"><a href="#隐含规则和模式规则" class="headerlink" title="隐含规则和模式规则"></a>隐含规则和模式规则</h2><p>makefile的很多灵活写法：</p>
+<ul>
+<li><p>一个目标依赖的所有条件可以拆开来写：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main.o: main.h stack.h maze.h</span></span><br><span class="line"></span><br><span class="line"><span class="section">main.o: main.c </span></span><br><span class="line">	gcc -c main.c</span><br><span class="line"><span class="comment">#上述就相当于</span></span><br><span class="line"><span class="section">main.o: main.c main.h stack.h maze.h</span></span><br><span class="line">	gcc -c main.c</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果一个目标拆开写多条规则，其中只有一条规则允许有命令列表，其他规则应该没有命令列表，否则make会报警告并且只会执行最后一条规则。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.o stack.o maze.o</span></span><br><span class="line">	gcc main.o stack.o maze.o -o main</span><br><span class="line"></span><br><span class="line"><span class="section">main.o: main.h stack.h maze.h</span></span><br><span class="line"><span class="section">stack.o: stack.h main.h</span></span><br><span class="line"><span class="section">maze.o: maze.h main.h</span></span><br><span class="line"></span><br><span class="line"><span class="section">main.o: main.c</span></span><br><span class="line">	gcc -c main.c</span><br><span class="line"></span><br><span class="line"><span class="section">stack.o: stack.c</span></span><br><span class="line">	gcc -c stack.c</span><br><span class="line"></span><br><span class="line"><span class="section">maze.o: maze.c</span></span><br><span class="line">	gcc -c maze.c</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	-rm main *.o</span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>内建的隐含规则：（有些不写编译命令）如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.o stack.o maze.o</span></span><br><span class="line">	gcc main.o stack.o maze.o -o main</span><br><span class="line"></span><br><span class="line"><span class="section">main.o: main.h stack.h maze.h</span></span><br><span class="line"><span class="section">stack.o: stack.h main.h</span></span><br><span class="line"><span class="section">maze.o: maze.h main.h</span></span><br><span class="line"><span class="comment">#可以看到，这里三个规则都没有写编译命令</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	-rm main *.o</span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="comment">#——————————————————————————————————#</span></span><br><span class="line"><span class="comment">#执行情况：</span></span><br><span class="line">$ make</span><br><span class="line">cc    -c -o main.o main.c</span><br><span class="line">cc    -c -o stack.o stack.c</span><br><span class="line">cc    -c -o maze.o maze.c</span><br><span class="line">gcc main.o stack.o maze.o -o main</span><br></pre></td></tr></table></figure>
+
+<p>如果一个目标在Makefile中的所有规则都没有命令列表，make会尝试在<strong>内建的隐含规则（Implicit Rule）数据库</strong>中查找适合的规则。make的隐含规则数据库可以使用make -p来打印，打印出的格式也是makefile的格式，有很多变量和规则。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这里是隐含规则数据库中的一部分内容</span></span><br><span class="line"><span class="comment"># default</span></span><br><span class="line">OUTPUT_OPTION = -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># default</span></span><br><span class="line">CC = cc</span><br><span class="line"></span><br><span class="line"><span class="comment"># default</span></span><br><span class="line">COMPILE.c = <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(TARGET_ARCH)</span> -c</span><br><span class="line"></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line"><span class="comment">#  commands to execute (built-in):</span></span><br><span class="line">        $(COMPILE.c) <span class="variable">$(OUTPUT_OPTION)</span> <span class="variable">$&lt;</span></span><br><span class="line"><span class="comment">#这里的几个变量说明一下:</span></span><br><span class="line"><span class="comment"># $@ 表示规则中的目标，</span></span><br><span class="line"><span class="comment"># $&lt; 表示规则中的第一个条件</span></span><br><span class="line"><span class="comment"># %.o:%.c 是特殊的规则，模式规则（Pattern Rule）</span></span><br><span class="line"><span class="comment">#——————————————————————————————————————————#</span></span><br><span class="line"><span class="comment">#所以Makefile中如果以某个规则没有命令列表，make会查找隐含规则，例子中的main.o，就会转换如下：</span></span><br><span class="line"><span class="section">main.o: main.c</span></span><br><span class="line">	cc    -c -o main.o main.c</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以条件为中心写规则：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.o stack.o maze.o</span></span><br><span class="line">	gcc main.o stack.o maze.o -o main</span><br><span class="line"></span><br><span class="line">main.o stack.o maze.o: main.h</span><br><span class="line">main.o maze.o: maze.h</span><br><span class="line">main.o stack.o: stack.h</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	-rm main *.o</span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>我们知道，写规则的目的是让<code>make</code>建立依赖关系图，不管怎么写，只要把所有的依赖关系都描述清楚了就行。对于多目标的规则，<code>make</code>会拆成几条单目标的规则来处理，例如</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">target1 target2: prerequisite1 prerequisite2</span><br><span class="line">	command <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+
+<p>这样一条规则相当于：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target1: prerequisite1 prerequisite2</span></span><br><span class="line">	command prerequisite1 -o target1</span><br><span class="line"></span><br><span class="line"><span class="section">target2: prerequisite1 prerequisite2</span></span><br><span class="line">	command prerequisite1 -o target2</span><br></pre></td></tr></table></figure>
+
+<p>注意两条规则的命令列表是一样的，但<code>$@</code>的取值不同。</p>
+<blockquote>
+<p>学习参考：<a href="https://akaedu.github.io/book/ch22s02.html" target="_blank" rel="noopener">https://akaedu.github.io/book/ch22s02.html</a></p>
+</blockquote>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://yoursite.com/child">TripleNiu</a></p><p> <span>Link:  </span><a href="http://yoursite.com/child/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(2)/">http://yoursite.com/child/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(2)/</a></p><p> <span>Copyright:  </span><span>SanNiu</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(3)/" title="Makefile学习(3)"><span>< PreviousPost</span><br><span class="prevTitle">Makefile学习(3)</span></a><a class="nextSlogan" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(1)/" title="Makefile学习(1)"><span>NextPost ></span><br><span class="nextTitle">Makefile学习(1)</span></a><div class="clear"></div></div><div id="comment"></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo" target="_blank" rel="noopener"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile学习-2"><span class="toc-number">1.</span> <span class="toc-text">Makefile学习(2)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#隐含规则和模式规则"><span class="toc-number">1.1.</span> <span class="toc-text">隐含规则和模式规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">1.2.</span> <span class="toc-text">总结：</span></a></li></ol></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

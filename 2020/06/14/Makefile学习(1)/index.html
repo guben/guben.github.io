@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="TripleNiu"><meta name="renderer" content="webkit"><meta name="copyright" content="TripleNiu"><meta name="keywords" content="CowboyCode"><meta name="description" content="转专业的，啥都不会，啥都在学的CS研究生"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Makefile学习(1) · Mr.Niu's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 4.2.1"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/cat1.jpg"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">三牛</div><div class="profile-signature">for you thousand times</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.Niu's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">Makefile学习(1)</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2020-06-14</span></span></div><div class="post-intro-read"><span> Word count: <span class="post-count">1.4k</span> | Reading time: <span class="post-count">4</span>min</span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h1 id="Makefile学习（1）"><a href="#Makefile学习（1）" class="headerlink" title="Makefile学习（1）"></a>Makefile学习（1）</h1><h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><ul>
+<li><p>首先，为什么要有Makefile呢？</p>
+<p>答：除了Hello World这种极简单的程序之外，一般的程序都是由多个源文件编译链接而成的，这些源文件的处理步骤通常用Makefile来管理。尤其是大型的软件工程项目中，很多的源文件，如果每次只是修改了其中的一个文件，但是没有Makefile，需要每个文件都编译一遍的话，可能几个小时或者几天就过去了。使用Makefile，会检查一下是否文件有修改，仅仅编译需要改动的部分。</p>
+</li>
+<li><p><strong>基本规则：</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">target ... : prerequisites ... </span><br><span class="line">	command1</span><br><span class="line">	command2</span><br><span class="line">	...</span><br><span class="line"><span class="comment">#例子：</span></span><br><span class="line"><span class="section">main: main.o stack.o maze.o #规则的目标和条件</span></span><br><span class="line">	gcc main.o stack.o maze.o -o main <span class="comment">#规则的执行列表，必须以Tab开头</span></span><br><span class="line"><span class="comment">#这样的一条叫   规则</span></span><br><span class="line"><span class="comment">#main是这条规则的目标 target</span></span><br><span class="line"><span class="comment">#main.o stack.o maze.o是这条规则的  条件 prerequisite</span></span><br><span class="line"><span class="comment">#关系，欲更新目标，必须首先更新它的所有条件；所有条件中只要有一个条件被更新了，目标也必须随之更新</span></span><br><span class="line"><span class="comment">#“更新”：执行一遍规则中的  命令列表  ，必须以Tab开头，不能是空格，每个命令make会创建一个Shell进程来执行</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>规则、目标、条件、命令列表（Tab开头）。</p>
+</li>
+<li><p>Makefile中的第一条规则的目标，称为缺省目标，只要缺省目标更新了就算完成任务了，其他的工作都是为了这个目的做的。</p>
+</li>
+<li><p><code>make</code>会自动选择那些受影响的源文件重新编译，不受影响的源文件则不重新编译。</p>
+</li>
+<li><p>判断规则目标是否需要更新：</p>
+<ul>
+<li>目标没有生成</li>
+<li>某个条件需要更新</li>
+<li>某个条件的修改时间比目标晚</li>
+</ul>
+</li>
+<li><p>规则被执行之前，可能有的状态</p>
+<ul>
+<li>需要更新，能够找到以条件为目标的规则，并且该规则中的目标需要更新</li>
+<li>不需要更新，能够找到以该条件为目标的规则，但是该规则中的目标不需要更新；或者不能找到以该条件为目标的规则，并且该条件已经生成</li>
+<li>错误，不能找到以该条件为目标的规则，并且该条件没有生成</li>
+</ul>
+</li>
+<li><p>执行一条规则A的步骤：</p>
+<ol>
+<li>检查它的每个条件P<ul>
+<li>如果P需要更新，执行以P为目标的规则B，之后，无论是否生成文件P，都认为P已经更新</li>
+<li>如果找不到规则B，并且P已经存在，则P不需要更新</li>
+<li>如果找不到规则B，并且文件P不存在，则报错退出</li>
+</ul>
+</li>
+<li>在检查完规则A的所有条件后，检查他的目标T，如果有下面情况，就执行命令列表<ul>
+<li>文件T不存在</li>
+<li>文件T存在，但是某个条件修改时间比它晚</li>
+<li>某个条件P已经被更新</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>clean原则</strong></p>
+<p>通常Makefile中都会有一个clean的规则，用于清除编译过程中产生的二进制文件，保留源文件。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">clean:</span></span><br><span class="line">	@echo <span class="string">"cleanning project"</span></span><br><span class="line">	-rm main *.o</span><br><span class="line">	@echo <span class="string">"clean completed"</span></span><br><span class="line"><span class="comment">#下面讲@和-的区别</span></span><br><span class="line"><span class="comment">#如果加上 @ ，那么输出就不显示命令本身，只显示输出结果</span></span><br><span class="line"><span class="comment">#通常情况下，make执行的命令如果出错（命令退出状态非0），就会立刻终止，不在执行后续命令</span></span><br><span class="line"><span class="comment">#但是如果加上 - ，那么即使这条命令出错，make也会继续执行后续命令</span></span><br><span class="line"><span class="comment">#通常rm和mkdir都要加上-，因为rm可能没有文件删除，mkdir可能已经创建文件</span></span><br></pre></td></tr></table></figure>
+
+<p>这条规则加到末尾，然后执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make clean </span></span><br><span class="line">cleanning project</span><br><span class="line">rm main *.o</span><br><span class="line">clean completed</span><br></pre></td></tr></table></figure>
+
+<p>命令行输入make和一个指定的目标（例如clean）,就会更新这个目标，如果没有指定的话，就会更新Makefile中的第一条规则，（缺省目标）。</p>
+<p>有一个问题，如果说目录下存在一个叫clean的文件，make clean这个命令，执行规则，但是clean目标不依赖于任何条件，所以认为不需要更新，就没有执行命令列表。所以，需要<strong>添加一条特殊命令，把clean申明为一个伪目标。</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="comment">#PHONY 假的，伪装的</span></span><br><span class="line"><span class="comment">#可以放在任意位置</span></span><br><span class="line"><span class="comment">#这个命令是没有命令列表的</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>make的处理流程</p>
+<ul>
+<li><p>首先从前到后读取所有规则，建立起一个完整的依赖关系图，</p>
+<p><img src="https://akaedu.github.io/book/images/make.graph.png" alt="Makefile的依赖关系图"></p>
+</li>
+<li><p>然后从缺省目标或者命令行指定的目标开始，根据依赖关系图选择适当的规则执行，执行Makefile中的规则和执行C代码不一样，并不是从前到后按顺序执行，也不是所有规则都要执行一遍，例如<code>make</code>缺省目标时不会更新<code>clean</code>目标，因为从上图可以看出，它跟缺省目标没有任何依赖关系。</p>
+</li>
+</ul>
+</li>
+<li><p>一些约定俗成的名字</p>
+<ul>
+<li><code>all</code>，执行主要的编译工作，通常用作缺省目标。</li>
+<li><code>install</code>，执行编译后的安装工作，把可执行文件、配置文件、文档等分别拷到不同的安装目录。</li>
+<li><code>clean</code>，删除编译生成的二进制文件。</li>
+<li><code>distclean</code>，不仅删除编译生成的二进制文件，也删除其它生成的文件，例如配置文件和格式转换后的文档，执行<code>make distclean</code>之后应该清除所有这些文件，只留下源文件。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>参考：<a href="https://akaedu.github.io/book/ch22.html" target="_blank" rel="noopener">https://akaedu.github.io/book/ch22.html</a></p>
+</blockquote>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://yoursite.com/child">TripleNiu</a></p><p> <span>Link:  </span><a href="http://yoursite.com/child/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(1)/">http://yoursite.com/child/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(1)/</a></p><p> <span>Copyright:  </span><span>SanNiu</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2020/06/14/Makefile%E5%AD%A6%E4%B9%A0(2)/" title="Makefile学习(2)"><span>< PreviousPost</span><br><span class="prevTitle">Makefile学习(2)</span></a><a class="nextSlogan" href="/2020/06/14/C%E6%A0%87%E5%87%86%E5%BA%93-%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0/" title="C标准库-字符操作函数"><span>NextPost ></span><br><span class="nextTitle">C标准库-字符操作函数</span></a><div class="clear"></div></div><div id="comment"></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo" target="_blank" rel="noopener"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile学习（1）"><span class="toc-number">1.</span> <span class="toc-text">Makefile学习（1）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本规则"><span class="toc-number">1.1.</span> <span class="toc-text">基本规则</span></a></li></ol></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>
